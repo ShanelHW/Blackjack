@@ -18,7 +18,7 @@ const CARDS = [
       png: "https://deckofcardsapi.com/static/img/8D.png",
     },
     value: "8",
-    value: 8,
+    numValue: 8,
     suit: "DIAMONDS",
   },
   {
@@ -573,58 +573,128 @@ const CARDS = [
   },
 ]; /* //* LETS GET HACKING! // Grab the button // Grab the deck*/
 
-const drawBtn = document.querySelector(`#draw`);
+const drawtBtn = document.querySelector(`#draw`);
+// const holdBtn = document.querySelector(`#hold`);
 const resetBtn = document.querySelector(`#reset`);
-const playerDeck = document.querySelector(`#player-deck`)
-const dealerDeck = document.querySelector(`#dealer-deck`)
-const score = document.querySelector(`#scoreDisplay`)
-const playerScore = 0;
-const dealerScore = 0
-
+const playerDeck = document.querySelector(`#player-deck`);
+const dealerDeck = document.querySelector(`#dealer-deck`);
+const score = document.querySelector(`#scoreDisplay`);
+let winner = document.querySelector(`#winner`)
+let playerScore = 0;
+let dealerScore = 0;
 
 /*Create Function - Draw & Show ONLY ONE card - at RANDOM */
 /* // Instructions Create a new function (getCard) // Inside the function // Create random index // Grab a random card from the cards array // create new image element // set the 'src' attribute of the img use // setAttribute() // append the image the the deck // Add the function to the draw one buttons
-*/
+ */
 getCard = () => {
-    let index = Math.floor(Math.random() * CARDS.length)
-    let randomCard = CARDS[index]
-    const newImg = document.createElement('img')
-    newImg.src = randomCard.image
-    document.querySelector(`#player-deck`).appendChild(newImg)
-    playerScore += randomCard.numValue;
-    console.log('getting player card')
-}
-getDealerCard = () => {
-  let index = Math.floor(Math.random() * CARDS.length)
-  let randomCard = CARDS[index]
-  const newImg = document.createElement('img')
-  newImg.src = randomCard.image
-  document.querySelector(`#dealer-deck`).appendChild(newImg)
-  dealerScore += randomCard.numValue;
+  let index = Math.floor(Math.random() * CARDS.length);
+  let randomCard = CARDS[index];
+  const newImg = document.createElement("img");
+  newImg.src = randomCard.image;
+  document.querySelector(`#player-deck`).appendChild(newImg);
+  console.log(`Player card value: ${randomCard.numValue}`)
+  if(randomCard.value == 'ACE'){
+    if(playerScore + 11 > 21){
+      playerScore ++
+      console.log(`ace case`)
+    }
+    else{
+      playerScore += 11;
+      console.log(`ace else`)
+    }
+  }
+  else{
+    playerScore += randomCard.numValue
+  }
 
-  console.log('getting dealer card')
-}
-
-/*Create Function - Draw & Show *FIVE* *RANDOM* Cards
-**BONUS** Display the Point Value */
-const draw = () => {
-    getCard()
-    getDealerCard()
 };
 
+getDealerCard = () => {
+  let index = Math.floor(Math.random() * CARDS.length);
+  let randomCard = CARDS[index];
+  const newImg = document.createElement("img");
+  newImg.src = randomCard.image;
+  document.querySelector(`#dealer-deck`).appendChild(newImg);
+  console.log(`Dealer card value: ${randomCard.numValue}`)
+  if(randomCard.value == 'ACE'){
+    if(dealerScore + 11 > 21){
+      dealerScore ++
+      console.log(`ace case`)
+    }
+    else{
+      dealerScore += 11;
+      console.log(`ace else`)
+    }
+  }
+  else{
+    dealerScore += randomCard.numValue
+  }
+}
 
-/*Create Function - RESET! Clear the Card Display
- **HINT! RED WEDDING LAB!**
- */
+const displayScore = () =>{
+  document.querySelector(
+    `#scoreDisplay`
+  ).textContent = `Player: ${playerScore} Dealer:${dealerScore}`;
+}
+
+const chooseWinner = () =>{
+if(playerScore > 21 && dealerScore <21){
+  document.querySelector(
+    `#winner`).textContent='Dealer Wins!'
+}
+else if(playerScore < 21 && dealerScore > 21){
+  document.querySelector(
+    `#winner`
+  ).textContent='Player Wins!'
+}
+else if(playerScore == 21 && dealerScore < 21){
+  document.querySelector(
+    `#winner`
+  ).textContent = 'Player Wins!'
+}
+else if(playerScore < 21 && dealerScore == 21) { 
+  document.querySelector(
+    `#winner`
+  ).textContent = 'Dealer Wins!'}
+else{
+  document.querySelector(
+    `#winner`
+  ).textContent = ''
+}} 
+// const hold = () => {
+//     getDealerCard();
+//   displayScore();
+//   chooseWinner();
+  
+//  };
+
+ /*BONUS** Display the Point Value */
+const draw = () => {
+  getCard();
+  chooseWinner();
+  getDealerCard();
+  displayScore();
+  chooseWinner();
+  
+ };
+
+/*Create Function - RESET! Clear the Card Display and Scores*/
+
 const reset = () => {
-  while(playerDeck.firstElementChild) {
-	playerDeck.firstElementChild.remove()
-    console.log('resetting player hand')
-} 
-while(dealerDeck.firstElementChild) {
-	dealerDeck.firstElementChild.remove()
-    console.log('resetting dealer hand')
-} 
+  while (playerDeck.firstElementChild) {
+    playerDeck.firstElementChild.remove();
+    console.log("resetting player hand");
+  }
+  while (dealerDeck.firstElementChild) {
+    dealerDeck.firstElementChild.remove();
+    console.log("resetting dealer hand");
+  }
+ playerScore = 0;
+ dealerScore = 0;
+  document.querySelector(
+    `#winner`
+  ).textContent = ' '
+  displayScore()
 };
 
 //addListeners
