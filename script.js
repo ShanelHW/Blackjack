@@ -574,7 +574,7 @@ const CARDS = [
 ]; /* //* LETS GET HACKING! // Grab the button // Grab the deck*/
 
 const drawtBtn = document.querySelector(`#draw`);
-// const holdBtn = document.querySelector(`#hold`);
+const holdBtn = document.querySelector(`#hold`);
 const resetBtn = document.querySelector(`#reset`);
 const playerDeck = document.querySelector(`#player-deck`);
 const dealerDeck = document.querySelector(`#dealer-deck`);
@@ -661,12 +661,12 @@ else{
     `#winner`
   ).textContent = ''
 }} 
-// const hold = () => {
-//     getDealerCard();
-//   displayScore();
-//   chooseWinner();
+const hold = () => {
+    getDealerCard();
+  displayScore();
+  chooseWinner();
   
-//  };
+ };
 
  /*BONUS** Display the Point Value */
 const draw = () => {
@@ -698,5 +698,6 @@ const reset = () => {
 };
 
 //addListeners
-drawBtn.addEventListener("click", draw);
+drawtBtn.addEventListener("click", draw);
 resetBtn.addEventListener("click", reset);
+holdBtn.addEventListener("click", hold);
